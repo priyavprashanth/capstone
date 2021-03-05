@@ -1,0 +1,51 @@
+{% extends "base.html" %} {% block head %} {{ super() }}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename= 'extended_beauty.css') }}"
+/>
+{% endblock %} {% block content %}
+<h1>
+  Welcome, {{ user.name }}!
+</h1>
+<div>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <table class="table table-hover" style="width: 700px;">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Total Steps</th>
+        <th scope="col">Date</th>
+        <th scope="col">Comments</th>
+        <th scope="col">Edit</th>
+        <th scope="col">Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for stepsRecord in stepsRecords %}
+      <tr>
+        <td>{{ stepsRecord.steps_completed }}</td>
+        <td>{{ stepsRecord.date_posted.strftime('%m/%d/%Y') }}</td>
+        <td>{{ stepsRecord.comment }}</td>
+        <td>
+          <a
+            href="{{ url_for('main.update_stepsRecord', stepsRecord_id=stepsRecord.id) }}"
+            class="btn btn-outline-primary"
+            role="button"
+          >
+          <button class="btn"><i class="fa fa-edit"></i></button>
+          </a>
+        </td>
+        <td>
+          <a
+            href="{{ url_for('main.delete_stepsRecord', stepsRecord_id=stepsRecord.id) }}"
+            class="btn btn-outline-danger"
+            role="button"
+          >
+          <button class="btn"><i class="fa fa-trash"></i></button>
+          </a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

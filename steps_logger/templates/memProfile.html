@@ -1,0 +1,111 @@
+{% extends "base.html" %} {% block head %} {{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename= 'extended_beauty.css') }}" />
+
+{% endblock %} {% block content %}
+<div class="col-md-4 col-md-offset-4">
+  <form method="POST" action="/loginWithToken">
+
+    <h2>Log In With Token</h2>
+    <p>
+      Dear Member / Reviewer,
+      <br>
+      A token is generated for you, you can check the permissions that are associated with your
+      account by copying the token and pasting it in jwt.io.
+      <br>
+      <div class="form-group">
+        <label for="token">Token</label>
+  
+        <input type="text" class="form-control" id="token" name="token" />
+        <script type="text/javascript">
+          var token = new URL(window.location).hash.split('&').filter(function (el) { if (el.match('access_token') !== null) return true; })[0].split('=')[1];
+          document.getElementById("token").setAttribute('value', token);
+  
+        </script>
+  
+      </div>
+      <br>
+      
+      After you have verified the permissions you can click on Proceed to test and verify the actions
+      that can be taken for permissions associated with your role.
+      Thank You!
+      <br>
+      <br>
+      <button type="submit" id="submitButton" class="btn btn-primary">Proceed</button>
+
+      <br>
+      <br>
+
+      You should see permissions like this:
+      <br>
+      For a user:
+      <br>
+      {
+      <br>
+      "iss": "https://prisha.au.auth0.com/",
+      <br>
+      "sub": "auth0|6037794ec34838006a0499d9",
+      <br>
+      "aud": "stepsLogger",
+      <br>
+      "iat": 1614869938,
+      <br>
+      "exp": 1614873538,
+      <br>
+      "azp": "qXot7M1Z3VlF5e3cHMg7IAXzDHDNYJdK",
+      <br>
+      "scope": "",
+      <br>
+      <b>
+        "permissions": [
+        <br>
+        "delete:steps",
+        <br>
+        "get:steps-detail",
+        <br>
+        "patch:steps",
+        <br>
+        "post:steps"
+        <br>
+        ]
+        <br>
+      </b>
+      <br>
+      For an admin:
+      <br>
+      {
+      <br>
+      "iss": "https://prisha.au.auth0.com/",
+      <br>
+      "sub": "auth0|603779f1afdf1f0069160f3c",
+      <br>
+      "aud": "stepsLogger",
+      <br>
+      "iat": 1614870086,
+      <br>
+      "exp": 1614873686,
+      <br>
+      "azp": "qXot7M1Z3VlF5e3cHMg7IAXzDHDNYJdK",
+      <br>
+      "scope": "",
+      <br>
+      <b>
+        "permissions": [
+        <br>
+        "get:steps-all"
+        <br>
+        ]
+      </b>
+      <br>
+      }
+      <br>
+
+      }
+      <br>
+
+    </p>
+
+
+
+  </form>
+</div>
+{% endblock %}
