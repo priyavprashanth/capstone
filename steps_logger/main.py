@@ -58,7 +58,7 @@ def create_post_req():
     headers = {"Authorization": bearer_token}
 
     if perm == 'post:steps':
-        url = 'http://localhost:5000/addSteps'
+        url = 'https://steps-logger.herokuapp.com/addSteps'
         resp = requests.post(url, headers=headers)
         res = Response(resp)
     return Response(resp)
@@ -73,7 +73,7 @@ def create_update_req():
 
     if perm == 'patch:steps':
         # Need to provide with the id
-        url = 'http://localhost:5000/update'
+        url = 'https://steps-logger.herokuapp.com/update'
         print('URL is', url)
         resp = requests.post(url, headers=headers)
         res = Response(resp)
@@ -89,7 +89,7 @@ def create_delete_req():
     headers = {"Authorization": bearer_token, "stepsRecord_id": stepsRecord_id}
 
     if perm == 'delete:steps':
-        url = 'http://localhost:5000/delete'
+        url = 'https://steps-logger.herokuapp.com/delete'
         resp = requests.post(url, headers=headers)
         res = Response(resp)
 

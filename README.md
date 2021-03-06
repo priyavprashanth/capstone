@@ -198,4 +198,7 @@ In addition to the requirements in the Rubric, listing further details here
     9. README file creation : 
         https://medium.com/@saumya.ranjan/how-to-write-a-readme-md-file-markdown-file-20cb7cbcd6f
 
+### Questions asked in Udacity's knowledge centre:
+1. https://knowledge.udacity.com/questions/499406
+2. https://knowledge.udacity.com/questions/501346
 

@@ -18,7 +18,7 @@ from flask_cors import cross_origin
 AUTH0_DOMAIN = configAuth0['AUTH0_DOMAIN']  # Priya : added domain
 ALGORITHMS = configAuth0['ALGORITHMS']
 API_AUDIENCE = configAuth0['API_AUDIENCE']
-AUTH0_CALLBACK_URL = 'http://localhost:5000/profile'
+AUTH0_CALLBACK_URL = 'https://steps-logger.herokuapp.com/profile'
 
 '''
 Priya Note to the Reviewer: 
@@ -266,7 +266,7 @@ def loggingInUser():
 @auth.route('/memLogin')
 @cross_origin(headers=["Content-Type", "Authorization"])
 def memLogin():
-    link = 'https://prisha.au.auth0.com/authorize?audience=stepsLogger&response_type=token&client_id=qXot7M1Z3VlF5e3cHMg7IAXzDHDNYJdK&redirect_uri=http://localhost:5000/memProfile'
+    link = 'https://prisha.au.auth0.com/authorize?audience=stepsLogger&response_type=token&client_id=qXot7M1Z3VlF5e3cHMg7IAXzDHDNYJdK&redirect_uri=https://steps-logger.herokuapp.com/memProfile'
     return redirect(link)
 
 # Priya Note to the reviewer : Below function was written to automate the task of manually adding the jwt token
@@ -296,13 +296,13 @@ def loginWithToken():
     # print('Permission', permission)
     # Priya : get:steps-all is the permission for an admin therefore they are forwarded to the admin page /allUsers
     if ('get:steps-all' in permissions):
-        url = 'http://localhost:5000/allUsers'
+        url = 'https://steps-logger.herokuapp.com/allUsers'
         headers = {"Authorization": bearer_token}
         resp = requests.post(url, headers=headers)
         res = Response(resp)
     # Priya : get:steps-detail is the permission for a specific user, he / she is forwarded to user page /user
     elif('get:steps-detail' in permissions):
-        url = 'http://localhost:5000/user'
+        url = 'https://steps-logger.herokuapp.com/user'
         headers = {"Authorization": bearer_token}
         resp = requests.post(url, headers=headers)
         res = Response(resp)
