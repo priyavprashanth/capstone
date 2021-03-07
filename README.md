@@ -1,18 +1,20 @@
 # Project Description
-The project - Steps Logger is a web based application with which one can track or keep a record of the number of steps that they have taken on a daily basis.
+The project - Steps Logger  is a web based application with which one can track or keep a record of the number of steps that they have taken on a daily basis.
 One can add as many records of steps taken on a particular day.
 All CRUD operations - Create a record, Read or view the steps records, Update or edit the steps records and Delete their steps records is possilbe using the steps logger.
 
+**Application URL :: https://steps-logger.herokuapp.com/**
 
 ### __Priya's note to the reviewer wr.r.t. the project:__
 The application has two parts to it.
 When you open up the main page : at the top left you would see three tabs : **Signup, User Login and Member Login**
 
-##### Part 1 : Demo Usage : Signup and User Login Tabs
+##### Part 1 : Demo of Usage : Signup and User Login Tabs
 Signup and User Login tabs lets you signup an account for yourself and demonstrates how you can login with the account created and  how you can use the application to record the steps taken and perform all the CRUD operations. This part **does not** have any RBAC auth0 authentication setup. This is purely for one to understand how to use the appliction. 
+__Request the reviewer to please sign up 2 accounts user and admin with the credentials listed under '**Reviewer Needs to**' in order to test the application__
 
 ##### Part 2 : Member Login with Auth0 Authentication and RBAC implementation
-There are two users created : 
+There are two users created in Auth0 for this application : 
 1. Admin :
     user name : admin@stepslogger.com, 
     role associated : admin, 
@@ -27,7 +29,7 @@ There are two users created :
         c. patch:steps(Let's user edit the record)
         d. delete:steps(Lets user delete a record)
 
-The reviewer needs to 
+**The reviewer needs to**
 1. **Sign up** with the listed email id and password below for the 2 accounts admin and user. Please use the exact credentials listed below since I have created the same users with the login credentials in Auth0 for my project.
 2. Login to the each of the accounts by clicking the **Member Login** tab to check and verify auth0 authentication and RBAC implementation.
 
@@ -56,8 +58,28 @@ Instead of manually recording my steps on a daily basis, wanted to develop an ap
 Wanted to do a pet project for myself from scatch therefore decided to develop this project and ensured that this project includes all requirements of the Capstone project. 
 
 ## Project dependencies, local development and hosting instructions
+1. Reviewer needs to : first open the web application :  https://steps-logger.herokuapp.com/ and signup for the two accounts user and admin with the credentials provided below.
+2. For reviewing the project locally:
+    a. Comment the line : db_drop_and_create_all() in the file : __init__.py
+    b. Replace all instances of https://steps-logger.herokuapp.com/ with 'http://localhost:5000/
+    b. From the project folder (capstone), run 
+        1. 'pip install -r requirements.txt'
+        2. export FLASK_APP=steps_logger
+        3. export FLASK_DEBUG=1
+        4. flask run --host 0.0.0.0 --port 5000
+        __Priya note to the reviewer : I give the host as '0.0.0.0' since am running my application on a Unix guest VM with a Windows host__     
+ 
+
 
 ## Detailed instructions for scripts to install any project dependencies, and to run the development server.
+__Priya Note to the reviewer__
+i. Used pipreqs to create the requirements.txt file
+ii. For Testing :
+    a. Please open the below link (twice for each of the two users - user and admin, giving a gap of 2 mins ) in the browser:
+    https://prisha.au.auth0.com/authorize?audience=stepsLogger&response_type=token&client_id=qXot7M1Z3VlF5e3cHMg7IAXzDHDNYJdK&redirect_uri=https://steps-logger.herokuapp.com/memProfile
+    Take the token from the browser url and add these tokens in bearer_token in config file for the keys user and admin.
+    b. Another easier approach would be clicking on Member Login tab on the top right corner and logging in with the credentials provided 
+
 
 ## Documentation of API behavior and RBAC controls 
 #### There are 2 roles for this application :
@@ -198,7 +220,35 @@ In addition to the requirements in the Rubric, listing further details here
     9. README file creation : 
         https://medium.com/@saumya.ranjan/how-to-write-a-readme-md-file-markdown-file-20cb7cbcd6f
 
-### Questions asked in Udacity's knowledge centre:
+### **Questions asked in Udacity's knowledge centre:**
 1. https://knowledge.udacity.com/questions/499406
 2. https://knowledge.udacity.com/questions/501346
+
+### Priya's diary of roadblocks, Challenges faced during development and the links referred to for solution
+1. When I click on Member login tab, the link "https://prisha.au.auth0.com/authorize?audience=stepsLogger&response_type=token&client_id=t4dkSjOynAupe3hgs0f1FjkkHm8Nl1nC&redirect_uri=https://steps-logger.herokuapp.com" should be hit and the resulting token should be retrieved and added in the token text box provided in the memProfile.html file.
+__Checked extensively and finally landed upon a stackoverflow solution which explained the use of window.location and document.getElementbyID functions, based on which wrote the below javascript function:__
+        <script type="text/javascript">
+          var token = new URL(window.location).hash.split('&').filter(function (el) { if (el.match('access_token') !== null) return true; })[0].split('=')[1];
+          document.getElementById("token").setAttribute('value', token);  
+        </script>
+
+2. How to create a request to include token in the headers : read about requests, flask's request and many other modules and finally was able to create a request in the following format:
+resp = requests.post(url, headers=headers)
+An example :
+    url = 'https://steps-logger.herokuapp.com/allUsers'
+    headers = {"Authorization": bearer_token}
+    resp = requests.post(url, headers=headers)
+    res = Response(resp)
+Links referred : https://stackoverflow.com/questions/10768522/python-send-post-with-header 
+
+3. How to display the name of the user in the all users steps record report when you login as admin..
+Steps table contained the foreign key user_id which was the primary key in the User table. I needed to write the query in SQLAlchemy to display the user name instead of id. 
+Link referred : https://stackoverflow.com/questions/6044309/sqlalchemy-how-to-join-several-tables-by-one-query
+
+**Priya Note to the Reviewer**
+__Have listed only 3 challenges among the many challenges and roadblocks that I faced. These took atleast 2 days for me to find the solution :-) , therefore am adding them here__
+
+
+
+
 

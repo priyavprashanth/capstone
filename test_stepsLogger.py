@@ -18,7 +18,7 @@ database_path = "sqlite:///{}".format(
 print(database_path)
 
 # Priya Note to the reviewer : Before running this test, 
-# 1. Please open the below link (twice for each of the two users - user and admin) in the browser:
+# 1. Please open the below link (twice for each of the two users, giving a gap of 2 mins - user and admin) in the browser:
 # https://prisha.au.auth0.com/authorize?audience=stepsLogger&response_type=token&client_id=qXot7M1Z3VlF5e3cHMg7IAXzDHDNYJdK&redirect_uri=https://steps-logger.herokuapp.com/memProfile
 # 2. First login as user using the user credentials from the README.md file and collect the token from 
 # browser url - save this as bearer_token for the user
