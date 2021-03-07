@@ -8,7 +8,7 @@ import requests
 import urllib3
 
 import json
-# Priya - imported abort from flask as have implemented abort function mostly, 
+# Priya - imported abort from flask as have implemented abort function mostly,
 # referred the link https://stackoverflow.com/questions/41768866/what-exactly-does-flask-abort-do
 from flask import _request_ctx_stack, abort
 from functools import wraps
@@ -52,12 +52,16 @@ TODO from Rubric:
 '''
 
 # Priya note to the reviewer : Below AuthError exception has been used for status codes 400, 401 and 403
+
+
 class AuthError(Exception):
     def __init__(self, error, status_code):
         self.error = error
         self.status_code = status_code
 
 # Priya - @TODO : 1. Project includes a custom @requires_auth decorator - DONE
+
+
 def requires_auth(permission=''):
     def requires_auth_decorator(f):
         @wraps(f)
@@ -110,6 +114,8 @@ def get_token_auth_header():
     return(token)
 
 # Priya - @TODO : d. raise an error if the JWT doesn’t contain the proper action - Done
+
+
 def check_permissions(permission, payload):
     if 'permissions' not in payload:
         raise AuthError({
@@ -125,6 +131,8 @@ def check_permissions(permission, payload):
     return True
 
 # Priya - @TODO : b. Decode and verify the JWT using the Auth0 secret - DONE
+
+
 def verify_decode_jwt(token):
     # Token is verified to be an Auth0 token with key id (kid)
     # verified the token using Auth0 /.well-known/jwks.json
@@ -195,6 +203,9 @@ def verify_decode_jwt(token):
 
 auth = Blueprint('auth', __name__)
 
+# Below function is written to open the memLogin page for a user to get the token.
+
+
 @auth.route('/memLogin')
 @cross_origin(headers=["Content-Type", "Authorization"])
 def memLogin():
@@ -203,6 +214,8 @@ def memLogin():
 
 # Priya Note to the reviewer : Below function was written to automate the task of manually adding the jwt token
 # as bearer token in postman under authorization headers
+
+
 @auth.route('/loginWithToken', methods=['POST'])
 @cross_origin(headers=["Content-Type", "Authorization"])
 def loginWithToken():
@@ -239,7 +252,7 @@ def loginWithToken():
 
     return res
 
-#
+
 @auth.errorhandler(AuthError)
 def handle_auth_error(ex):
     response = jsonify(ex.error)
@@ -248,6 +261,8 @@ def handle_auth_error(ex):
 
 # Priya Note to the Reviewer : Below functions are primarily related to Part 1 of the project
 # basically to demonstrate the working of the app without any RBAC
+
+
 @auth.route('/signup')
 def signup():
     return render_template('signup.html')
