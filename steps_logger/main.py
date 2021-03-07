@@ -12,6 +12,8 @@ import requests
 main = Blueprint('main', __name__)
 AUTH0_AUTHORIZE_URL = 'https://prisha.au.auth0.com/authorize?audience=stepsLogger&response_type=token&client_id=t4dkSjOynAupe3hgs0f1FjkkHm8Nl1nC&redirect_uri=https://steps-logger.herokuapp.com'
 
+# Priya : Created a dictionary to add the token, role, permissions etc so that can use this dictionary
+# whenever I need to get the token value in the program.
 my_dict = {'token': '',
            'role': '',
            'permissions': ''
@@ -50,6 +52,8 @@ def memUser_stepsRecords(token):
         'member.html', stepsRecords=stepsRecords, user=user, user_logged_in=True, token=token))
     return resp
 
+# Priya: Below function is written to prepare the request URL for POST or create action
+
 
 @main.route('/create_post_req', methods=['GET', 'POST'])
 def create_post_req():
@@ -62,6 +66,8 @@ def create_post_req():
         resp = requests.post(url, headers=headers)
         res = Response(resp)
     return Response(resp)
+
+# Priya: Below function is written to prepare the request URL for update action
 
 
 @main.route('/create_update_req', methods=['GET', 'POST'])
@@ -78,6 +84,8 @@ def create_update_req():
         resp = requests.post(url, headers=headers)
         res = Response(resp)
     return res
+
+# Priya: Below function is written to prepare the request URL for delete action
 
 
 @main.route('/create_delete_req', methods=['GET', 'POST', 'DELETE'])
@@ -142,7 +150,7 @@ def addMemSteps():
     body = request.get_json()
     if steps_completed is None:
         steps_completed = body.get('steps_completed')
-    
+
     comment = request.form.get('comment')
     if comment is None:
         comment = body.get('comment')
@@ -239,6 +247,7 @@ def deleteSteps(token):
 # Thus have utilized the @main.errorhandler decorator for 5 status codes (400, 401, 403, 404 and 422).
 # I have used Blueprint and registered main therefore this decorator is defined as @main.errorhandler and not @app.errorhandler.
 
+
 @main.errorhandler(AuthError)
 def auth_error(err):
     return jsonify(err.error), err.status_code
@@ -252,6 +261,7 @@ def not_found(error):
         "message": "resource not found"
     }
     return jsonify(error_details), 404
+
 
 @main.errorhandler(422)
 def unprocessable(error):
