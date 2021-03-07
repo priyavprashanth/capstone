@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, request, flash, jsonify, Response, session
+from flask import Blueprint, render_template, redirect, url_for, request, flash, jsonify, Response,session
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, logout_user, login_required
 from .models import User
@@ -8,17 +8,14 @@ import requests
 import urllib3
 
 import json
-# Priya - imported abort from flask as have implemented abort function mostly,
-# referred the link https://stackoverflow.com/questions/41768866/what-exactly-does-flask-abort-do
+# Priya - imported abort from flask as have implemented abort function mostly, referred the link https://stackoverflow.com/questions/41768866/what-exactly-does-flask-abort-do
 from flask import _request_ctx_stack, abort
 from functools import wraps
 from jose import jwt
 from six.moves.urllib.request import urlopen
 from flask_cors import cross_origin
 
-# Priya : added auth0 domain, api_audience and auth0_callback_url in config.py file and am retrieving it
-# from the config.py file
-AUTH0_DOMAIN = configAuth0['AUTH0_DOMAIN']
+AUTH0_DOMAIN = configAuth0['AUTH0_DOMAIN']  # Priya : added domain
 ALGORITHMS = configAuth0['ALGORITHMS']
 API_AUDIENCE = configAuth0['API_AUDIENCE']
 AUTH0_CALLBACK_URL = 'https://steps-logger.herokuapp.com/memProfile'
@@ -29,7 +26,7 @@ Priya Note to the Reviewer:
 2. For each of these requirements, have added a comment specifying the details 
 of completion of the requirement.
 3. In addition, the function get_token_auth_header is written in-line with the 
-requirements from the Coffee Shop assignment, based on the learnings from the chapter Identity and Access Management
+requirements from the Coffee Shop assignment
 4. For the requirement c. take an argument to describe the action - this is completed 
 for the enpoint /allUsers defined in main.py. Below are the lines of code for your reference:
 @main.route("/allUsers", methods=['GET','POST'])
@@ -52,16 +49,12 @@ TODO from Rubric:
 '''
 
 # Priya note to the reviewer : Below AuthError exception has been used for status codes 400, 401 and 403
-
-
 class AuthError(Exception):
     def __init__(self, error, status_code):
         self.error = error
         self.status_code = status_code
 
 # Priya - @TODO : 1. Project includes a custom @requires_auth decorator - DONE
-
-
 def requires_auth(permission=''):
     def requires_auth_decorator(f):
         @wraps(f)
@@ -112,7 +105,7 @@ def get_token_auth_header():
     # Returns the token part of the header
     token = split_bearer_token[1]
     return(token)
-
+# 
 # Priya - @TODO : d. raise an error if the JWT doesn’t contain the proper action - Done
 
 
@@ -201,54 +194,7 @@ def verify_decode_jwt(token):
     }, 400)
 
 
-@auth.route('/memLogin')
-@cross_origin(headers=["Content-Type", "Authorization"])
-def memLogin():
-    link = 'https://prisha.au.auth0.com/authorize?audience=stepsLogger&response_type=token&client_id=qXot7M1Z3VlF5e3cHMg7IAXzDHDNYJdK&redirect_uri=https://steps-logger.herokuapp.com/memProfile'
-    return redirect(link)
-
-
 auth = Blueprint('auth', __name__)
-
-# Priya Note to the reviewer : Below function was written to automate the task of manually adding the jwt token
-# as bearer token in postman under authorization headers
-
-
-@auth.route('/loginWithToken', methods=['POST'])
-@cross_origin(headers=["Content-Type", "Authorization"])
-def loginWithToken():
-    gen_token = request.form.get('token')
-    bearer_token = 'Bearer '+gen_token
-    # First just check the permissions and accordingly send them to admin page or the user page.
-    try:
-        # Getting the payload to  get the permissions.
-        payload = verify_decode_jwt(gen_token)
-    except:
-        abort(401)
-
-    # Check if there are permissions in the payload
-    if 'permissions' not in payload:
-        raise AuthError({
-            'code': 'invalid_claims',
-            'description': 'Permissions not included in JWT.'
-        }, 400)
-
-    permissions = payload['permissions']
-    # print('Permission', permission)
-    # Priya : get:steps-all is the permission for an admin therefore they are forwarded to the admin page /allUsers
-    if ('get:steps-all' in permissions):
-        url = 'https://steps-logger.herokuapp.com/allUsers'
-        headers = {"Authorization": bearer_token}
-        resp = requests.post(url, headers=headers)
-        res = Response(resp)
-    # Priya : get:steps-detail is the permission for a specific user, he / she is forwarded to user page /user
-    elif('get:steps-detail' in permissions):
-        url = 'https://steps-logger.herokuapp.com/user'
-        headers = {"Authorization": bearer_token}
-        resp = requests.post(url, headers=headers)
-        res = Response(resp)
-
-    return res
 
 
 @auth.errorhandler(AuthError)
@@ -256,9 +202,6 @@ def handle_auth_error(ex):
     response = jsonify(ex.error)
     response.status_code = ex.status_code
     return response
-
-# Priya Note to the Reviewer : Below functions are primarily related to Part 1 of the project,
-# basically to demonstrate the working of the app without any RBAC.
 
 
 @auth.route('/signup')
@@ -318,6 +261,53 @@ def loggingInUser():
     # if the above check passes, then we know the user has the right credentials
     login_user(user, remember=remember)
     return redirect(url_for('main.profile'))
+
+
+@auth.route('/memLogin')
+@cross_origin(headers=["Content-Type", "Authorization"])
+def memLogin():
+    link = 'https://prisha.au.auth0.com/authorize?audience=stepsLogger&response_type=token&client_id=qXot7M1Z3VlF5e3cHMg7IAXzDHDNYJdK&redirect_uri=https://steps-logger.herokuapp.com/memProfile'
+    return redirect(link)
+
+# Priya Note to the reviewer : Below function was written to automate the task of manually adding the jwt token
+# as bearer token in postman under authorization headers
+
+
+@auth.route('/loginWithToken', methods=['POST'])
+@cross_origin(headers=["Content-Type", "Authorization"])
+def loginWithToken():
+    gen_token = request.form.get('token')
+    bearer_token = 'Bearer '+gen_token
+    # First just check the permissions and accordingly send them to admin page or the user page.
+    try:
+        # Getting the payload to  get the permissions.
+        payload = verify_decode_jwt(gen_token)
+    except:
+        abort(401)
+
+    # Check if there are permissions in the payload
+    if 'permissions' not in payload:
+        raise AuthError({
+            'code': 'invalid_claims',
+            'description': 'Permissions not included in JWT.'
+        }, 400)
+
+    permissions = payload['permissions']
+    # print('Permission', permission)
+    # Priya : get:steps-all is the permission for an admin therefore they are forwarded to the admin page /allUsers
+    if ('get:steps-all' in permissions):
+        url = 'https://steps-logger.herokuapp.com/allUsers'
+        headers = {"Authorization": bearer_token}
+        resp = requests.post(url, headers=headers)
+        res = Response(resp)
+    # Priya : get:steps-detail is the permission for a specific user, he / she is forwarded to user page /user
+    elif('get:steps-detail' in permissions):
+        url = 'https://steps-logger.herokuapp.com/user'
+        headers = {"Authorization": bearer_token}
+        resp = requests.post(url, headers=headers)
+        res = Response(resp)
+
+    return res
 
 
 @auth.route('/logout')
