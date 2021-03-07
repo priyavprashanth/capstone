@@ -18,7 +18,7 @@ from flask_cors import cross_origin
 AUTH0_DOMAIN = configAuth0['AUTH0_DOMAIN']  # Priya : added domain
 ALGORITHMS = configAuth0['ALGORITHMS']
 API_AUDIENCE = configAuth0['API_AUDIENCE']
-AUTH0_CALLBACK_URL = 'https://steps-logger.herokuapp.com/profile'
+AUTH0_CALLBACK_URL = 'https://steps-logger.herokuapp.com/memProfile'
 
 '''
 Priya Note to the Reviewer: 

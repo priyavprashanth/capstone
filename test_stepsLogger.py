@@ -15,11 +15,18 @@ project_dir = os.path.dirname(os.path.abspath(__file__))
 database_path = "sqlite:///{}".format(
     os.path.join(project_dir, database_filename))
 
-# Priya Note to the reviewer : Before running this test, replace the token in config file with the token
+# Priya Note to the reviewer : Before running this test, 
+# 1. Please open the below link (twice for each of the two users - user and admin) in the browser:
+# https://prisha.au.auth0.com/authorize?audience=stepsLogger&response_type=token&client_id=qXot7M1Z3VlF5e3cHMg7IAXzDHDNYJdK&redirect_uri=https://steps-logger.herokuapp.com/memProfile
+# 2. First login as user using the user credentials from the README.md file and collect the token from 
+# browser url - save this as bearer_token for the user
+# 3. Repeat the same for admin, open the above link from step 1 and login as admin using credentials
+# README.md file, collect the token from browser url and save it as bearer token for admin in config.py file.
 # that you get when running the application.
-# In addition, it would be good if you commented out test for admin while testing for user and vice versa
+# Now you can run the tests. 
+# In addition, incase any of the tests fail, it would be good if you commented out test for admin while testing for user and vice versa
 # Have tested it to work even without commenting the tests, but sometimes it gives error, am guessing
-# it is because of token expiring
+# it is because of token expiring.
 
 headers_user = {
     'Authorization': bearer_token['user']
