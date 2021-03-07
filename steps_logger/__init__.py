@@ -16,7 +16,7 @@ def create_app():
     Priya Note to the reviewer:
     Uncomment the following line to initialize the datbase on FIRST RUN
    '''
-    #db_drop_and_create_all()
+    db_drop_and_create_all()
 
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'
