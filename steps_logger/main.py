@@ -12,7 +12,7 @@ import requests
 main = Blueprint('main', __name__)
 AUTH0_AUTHORIZE_URL = 'https://prisha.au.auth0.com/authorize?audience=stepsLogger&response_type=token&client_id=t4dkSjOynAupe3hgs0f1FjkkHm8Nl1nC&redirect_uri=https://steps-logger.herokuapp.com'
 
-# Priya : Created a dictionary to add the token, role, permissions etc so that can use this dictionary 
+# Priya : Created a dictionary to add the token, role, permissions etc so that can use this dictionary
 # whenever I need to get the token value in the program.
 
 my_dict = {'token': '',
@@ -31,6 +31,8 @@ def memProfile():
     return render_template('memProfile.html')
 
 # Priya Note to the reviewer : GET request implementing Auth0
+
+
 @main.route('/user', methods=['GET', 'POST'])
 @requires_auth('get:steps-detail')
 def memUser_stepsRecords(token):
@@ -41,7 +43,7 @@ def memUser_stepsRecords(token):
     my_dict['permissions'] = ['get:steps-detail',
                               'post:steps', 'patch:steps', 'delete:steps']
 
-    # Priya Note to the reviewer: Have been using the user_logged_in flag to display Logout option 
+    # Priya Note to the reviewer: Have been using the user_logged_in flag to display Logout option
     # whenever the user is logged in.
     user_logged_in = False
     user = User.query.filter_by(email='user@stepslogger.com').first()
@@ -52,6 +54,8 @@ def memUser_stepsRecords(token):
     return resp
 
 # Priya: Below function is written to prepare the request URL with headers for post action
+
+
 @main.route('/create_post_req', methods=['GET', 'POST'])
 def create_post_req():
     perm = request.args.get('perm')
@@ -64,6 +68,8 @@ def create_post_req():
     return Response(resp)
 
 # Priya : Below function was written to prepare the request URL with headers for udpate action
+
+
 @main.route('/create_update_req', methods=['GET', 'POST'])
 def create_update_req():
     perm = request.args.get('perm')
@@ -79,6 +85,8 @@ def create_update_req():
     return res
 
 # Priya : Below function was written to prepare the request URL with headers for delete action
+
+
 @main.route('/create_delete_req', methods=['GET', 'POST', 'DELETE'])
 def create_delete_req():
     perm = request.args.get('perm')
@@ -96,6 +104,8 @@ def create_delete_req():
 
 # Priya Note to the Reviewer :
 # Below function is written for the user with manager role, one who can view steps record of all users
+
+
 @main.route("/allUsers", methods=['GET', 'POST'])
 @requires_auth('get:steps-all')
 def all_users_stepsRecords(token):
@@ -122,10 +132,12 @@ def all_users_stepsRecords(token):
 # 3. This will open up the addSteps form **only** if the user has the permission to post:steps
 # 4. Once the steps record is added then the user is returned to his/her profile page.
 
+
 @main.route('/addSteps', methods=['POST'])
 @requires_auth('post:steps')
 def addSteps(token):
     return render_template('addUser_stepsRecord.html', user_logged_in=True)
+
 
 @main.route('/addMemSteps', methods=['GET', 'POST'])
 def addMemSteps():
@@ -137,7 +149,7 @@ def addMemSteps():
     body = request.get_json()
     if steps_completed is None:
         steps_completed = body.get('steps_completed')
-    
+
     comment = request.form.get('comment')
     if comment is None:
         comment = body.get('comment')
@@ -162,11 +174,13 @@ def addMemSteps():
 # 3. This will open up the updateUser_stepsRecord form **only** if the user has the permission - patch:steps
 # 4. Once the steps record is updated, the user is returned to his/her profile page listing the steps details
 
+
 @main.route('/update', methods=['GET', 'PATCH', 'POST'])
 @requires_auth('patch:steps')
 def updateSteps(token):
     stepsRecord_id = request.headers.get('stepsRecord_id')
     return render_template('updateUser_stepsRecord.html', stepsRecord_id=stepsRecord_id, user_logged_in=True)
+
 
 @main.route('/updateUserSteps', methods=['GET', 'PATCH', 'POST'])
 def updateUser_stepsRecord():
@@ -202,6 +216,7 @@ def updateUser_stepsRecord():
 # 2. From the profile page, they can click on Delete icon in the Delete column to delete the required record.
 # 3. Clicking on delete, deletes the record and the user is returned to his/her profile page listing the steps details
 
+
 @main.route('/delete', methods=['POST', 'DELETE'])
 @requires_auth('delete:steps')
 def deleteSteps(token):
@@ -231,6 +246,7 @@ def deleteSteps(token):
 # Thus have utilized the @main.errorhandler decorator for 5 status codes (400, 401, 403, 404 and 422).
 # I have used Blueprint and registered main therefore this decorator is defined as @main.errorhandler and not @app.errorhandler.
 
+
 @main.errorhandler(AuthError)
 def auth_error(err):
     return jsonify(err.error), err.status_code
@@ -244,6 +260,7 @@ def not_found(error):
         "message": "resource not found"
     }
     return jsonify(error_details), 404
+
 
 @main.errorhandler(422)
 def unprocessable(error):

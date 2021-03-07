@@ -6,7 +6,6 @@ from flask_cors import CORS
 from .models import db, db_drop_and_create_all, setup_db
 
 
-
 def create_app():
     app = Flask(__name__)
 

@@ -48,11 +48,11 @@ class Steps(db.Model):
             stepsRecord = Steps(steps_completed=steps_completed,
                         comment=comment, author=user)
             stepsRecord.insert()
-    '''    
+    '''
+
     def insert(self):
         db.session.add(self)
         db.session.commit()
-    
 
     '''
         delete()

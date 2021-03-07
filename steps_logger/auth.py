@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, request, flash, jsonify, Response,session
+from flask import Blueprint, render_template, redirect, url_for, request, flash, jsonify, Response, session
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, logout_user, login_required
 from .models import User
@@ -8,7 +8,7 @@ import requests
 import urllib3
 
 import json
-# Priya - imported abort from flask as have implemented abort function mostly, 
+# Priya - imported abort from flask as have implemented abort function mostly,
 # referred the link https://stackoverflow.com/questions/41768866/what-exactly-does-flask-abort-do
 from flask import _request_ctx_stack, abort
 from functools import wraps
@@ -18,7 +18,7 @@ from flask_cors import cross_origin
 
 # Priya : added auth0 domain, api_audience and auth0_callback_url in config.py file and am retrieving it
 # from the config.py file
-AUTH0_DOMAIN = configAuth0['AUTH0_DOMAIN']  
+AUTH0_DOMAIN = configAuth0['AUTH0_DOMAIN']
 ALGORITHMS = configAuth0['ALGORITHMS']
 API_AUDIENCE = configAuth0['API_AUDIENCE']
 AUTH0_CALLBACK_URL = 'https://steps-logger.herokuapp.com/memProfile'
@@ -52,12 +52,16 @@ TODO from Rubric:
 '''
 
 # Priya note to the reviewer : Below AuthError exception has been used for status codes 400, 401 and 403
+
+
 class AuthError(Exception):
     def __init__(self, error, status_code):
         self.error = error
         self.status_code = status_code
 
 # Priya - @TODO : 1. Project includes a custom @requires_auth decorator - DONE
+
+
 def requires_auth(permission=''):
     def requires_auth_decorator(f):
         @wraps(f)
@@ -110,6 +114,8 @@ def get_token_auth_header():
     return(token)
 
 # Priya - @TODO : d. raise an error if the JWT doesn’t contain the proper action - Done
+
+
 def check_permissions(permission, payload):
     if 'permissions' not in payload:
         raise AuthError({
@@ -125,6 +131,8 @@ def check_permissions(permission, payload):
     return True
 
 # Priya - @TODO : b. Decode and verify the JWT using the Auth0 secret - DONE
+
+
 def verify_decode_jwt(token):
     # Token is verified to be an Auth0 token with key id (kid)
     # verified the token using Auth0 /.well-known/jwks.json
@@ -192,16 +200,20 @@ def verify_decode_jwt(token):
                 'description': 'Unable to find the appropriate key.'
     }, 400)
 
+
 @auth.route('/memLogin')
 @cross_origin(headers=["Content-Type", "Authorization"])
 def memLogin():
     link = 'https://prisha.au.auth0.com/authorize?audience=stepsLogger&response_type=token&client_id=qXot7M1Z3VlF5e3cHMg7IAXzDHDNYJdK&redirect_uri=https://steps-logger.herokuapp.com/memProfile'
     return redirect(link)
 
+
 auth = Blueprint('auth', __name__)
 
 # Priya Note to the reviewer : Below function was written to automate the task of manually adding the jwt token
 # as bearer token in postman under authorization headers
+
+
 @auth.route('/loginWithToken', methods=['POST'])
 @cross_origin(headers=["Content-Type", "Authorization"])
 def loginWithToken():
@@ -247,6 +259,7 @@ def handle_auth_error(ex):
 
 # Priya Note to the Reviewer : Below functions are primarily related to Part 1 of the project,
 # basically to demonstrate the working of the app without any RBAC.
+
 
 @auth.route('/signup')
 def signup():
@@ -305,6 +318,7 @@ def loggingInUser():
     # if the above check passes, then we know the user has the right credentials
     login_user(user, remember=remember)
     return redirect(url_for('main.profile'))
+
 
 @auth.route('/logout')
 @login_required
