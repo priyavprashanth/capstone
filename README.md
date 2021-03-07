@@ -1,3 +1,9 @@
+# Motivation for the project
+Because of Corona, we all have been restricted to stay at home. 
+Lack of exercise has taken a toll on my health. Was asked by my doctor to ensure I walk 10,000 steps in a day and aim to reduce weight.
+Instead of manually recording my steps on a daily basis, wanted to develop an application similar to pushups logger on Google play which will record the steps on a daily basis that I can review and take required measures for a healthy weight loss.
+Wanted to do a pet project for myself from scatch therefore decided to develop this project and ensured that this project includes all requirements of the Capstone project.
+
 # Project Description
 The project - Steps Logger  is a web based application with which one can track or keep a record of the number of steps that they have taken on a daily basis.
 One can add as many records of steps taken on a particular day.
@@ -51,12 +57,6 @@ Login details:
         d. **Only the admin** can view steps records of all users
         e. **Only the user** can perform **all CRUD operations** against their respective records.
 
-## Motivation for the project
-Because of Corona, we all have been restricted to stay at home. 
-Lack of exercise has taken a toll on my health. Was asked by my doctor to ensure I walk 10,000 steps in a day and aim to reduce weight.
-Instead of manually recording my steps on a daily basis, wanted to develop an application similar to pushups logger on Google play which will record the steps on a daily basis that I can review and take required measures for a healthy weight loss.
-Wanted to do a pet project for myself from scatch therefore decided to develop this project and ensured that this project includes all requirements of the Capstone project. 
-
 ## Project dependencies, local development and hosting instructions
 1. Reviewer needs to : first open the web application :  https://steps-logger.herokuapp.com/ and signup for the two accounts user and admin with the credentials provided below.
 2. For reviewing the project locally:
@@ -67,7 +67,20 @@ Wanted to do a pet project for myself from scatch therefore decided to develop t
         2. export FLASK_APP=steps_logger
         3. export FLASK_DEBUG=1
         4. flask run --host 0.0.0.0 --port 5000
-        __Priya note to the reviewer : I give the host as '0.0.0.0' since am running my application on a Unix guest VM with a Windows host__     
+        __Priya note to the reviewer : I give the host as '0.0.0.0' since am running my application on a Unix guest VM with a Windows host__ 
+3. Additional details :
+        1. Have used Flask framework for the application development.
+        2. Application runs on Ubuntu 16.04 guest VM on Windows 10 host.
+        3. Code development - used Visual Studio Editor.
+        4. Used Flask's
+                a. Blueprint to develop this application as a modular application.
+                b. render_template()
+        c. Template Inheritance to provide a common navigation bar across all pages.
+        5. DB : SQLite3
+        6. ORM : SQLAlchemy
+        7. werkzeug.security for hashing the passwords before saving it in the DB
+        8. Flask-Login for user session management.
+    
  
 
 
@@ -78,8 +91,8 @@ ii. For Testing :
     a. Please open the below link (twice for each of the two users - user and admin, giving a gap of 2 mins ) in the browser:
     https://prisha.au.auth0.com/authorize?audience=stepsLogger&response_type=token&client_id=qXot7M1Z3VlF5e3cHMg7IAXzDHDNYJdK&redirect_uri=https://steps-logger.herokuapp.com/memProfile
     Take the token from the browser url and add these tokens in bearer_token in config file for the keys user and admin.
-    b. Another easier approach would be clicking on Member Login tab on the top right corner and logging in with the credentials provided 
-
+    b. Another easier approach would be clicking on Member Login tab on the top right corner and logging in with the credentials provided, copy the token in the token text box in the memProfile.html page, add this token against user and admin in the token file for bearer_token.
+    c. Run 'python test_stepsLogger.py' in the project folder capstone.
 
 ## Documentation of API behavior and RBAC controls 
 #### There are 2 roles for this application :
