@@ -1,7 +1,7 @@
 # Priya Note to the reviewer : 
 # 1. Have added the token here, however, if you run my application  you will get 
 # the fresh active token from the application itself. You just need to prepend it with the word Bearer
-# and then add the string below
+# and then add the token string against user or admin respectively within bearer_token
 # 2. This token would have expired by the time you test, you can take the token and check for 
 # permissions but during testing, use the token that's provided to you in the application.
 # 3. Added the token in the config file since this is the right practice.

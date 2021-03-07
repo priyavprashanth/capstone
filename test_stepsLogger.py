@@ -22,7 +22,7 @@ print(database_path)
 # https://prisha.au.auth0.com/authorize?audience=stepsLogger&response_type=token&client_id=qXot7M1Z3VlF5e3cHMg7IAXzDHDNYJdK&redirect_uri=https://steps-logger.herokuapp.com/memProfile
 # 2. First login as user using the user credentials from the README.md file and collect the token from 
 # browser url - save this as bearer_token for the user
-# 3. Repeat the same for admin, open the above link from step 1 and login as admin using credentials
+# 3. Repeat the same for admin, open the above link from step 1 and login as admin using credentials in
 # README.md file, collect the token from browser url and save it as bearer token for admin in config.py file.
 # that you get when running the application.
 # Now you can run the tests. 
